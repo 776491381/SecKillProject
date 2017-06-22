@@ -1,3 +1,7 @@
+-- noinspection SqlDialectInspectionForFile
+
+-- noinspection SqlNoDataSourceInspectionForFile
+
 /*--数据库初始化--*/
 CREATE DATABASE seckill;
 
@@ -17,6 +21,7 @@ KEY idx_create_time(create_time)
 )ENGINE=InnoDB AUTO_INCREMENT = 1000 DEFAULT CHARSET = utf8 COMMENT = '秒杀库存';
 
 
+/*添加几条测试数据*/
 insert into seckill(name,number,start_time,end_time)
 VALUES
  ('1000秒杀iphone',100,'2017-6-20 00:00:00','2018-1-1 00:00:00'),
