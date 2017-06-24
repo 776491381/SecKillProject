@@ -10,9 +10,7 @@ import org.seckill.enums.SeckillStatEnum;
 import org.seckill.exception.RepeatKillException;
 import org.seckill.exception.SeckillCloseException;
 import org.seckill.exception.SeckillException;
-import org.seckill.service.SeckiellService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.seckill.service.SeckillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,7 @@ import java.util.List;
  */
 
 @Service
-public class SeckillServiceImpl implements SeckiellService {
+public class SeckillServiceImpl implements SeckillService {
 
     //注入service依赖
     @Autowired
@@ -92,7 +90,7 @@ public class SeckillServiceImpl implements SeckiellService {
     public SeckillExecution excuteSeckill(long seckillId, long userPhone, String md5)
             throws SeckillException, SeckillCloseException, RepeatKillException {
 
-        if (md5 == null || md5.equals(getMD5(seckillId))) {
+        if (md5 == null || !md5.equals(getMD5(seckillId))) {
             throw new SeckillException("seckill data rewrite");
         }
         //执行逻辑 ： 减库存 + 记录购买行为

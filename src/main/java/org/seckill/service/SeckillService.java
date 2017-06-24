@@ -15,7 +15,7 @@ import java.util.List;
  * 包含三个方面：方法定义粒度，参数，返回类型
  * Created by fyy on 6/22/17.
  */
-public interface SeckiellService {
+public interface SeckillService {
 
     /**
      * 返回所有秒杀详细
