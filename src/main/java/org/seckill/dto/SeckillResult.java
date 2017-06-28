@@ -10,13 +10,11 @@ public class SeckillResult<T> {
     private T data;
     private String error;
 
-    //如果success == true 那就要传数据
     public SeckillResult(boolean success, T data) {
         this.success = success;
         this.data = data;
     }
 
-    //success == false 传递错误信息
     public SeckillResult(boolean success, String error) {
 
         this.success = success;

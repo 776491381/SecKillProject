@@ -2,12 +2,9 @@ package org.seckill.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seckill.dao.SeckillDao;
-import org.seckill.dao.SuccessKillDao;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
-import org.seckill.entity.SuccessKilled;
 import org.seckill.exception.RepeatKillException;
 import org.seckill.exception.SeckillCloseException;
 import org.slf4j.Logger;
@@ -15,18 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
+ * JunitTest
  * Created by fyy on 6/24/17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/spring-dao.xml", "classpath:spring/spring-service.xml"})
 public class SeckillServiceTest {
-
     //    private SeckillDao seckillDao;
 //    private SuccessKillDao successKillDao;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -75,27 +69,26 @@ public class SeckillServiceTest {
 
     //完整逻辑
     @Test
-    public void testSeckillLoginAndExcute(){
+    public void testSeckillLoginAndExcute() {
         int id = 1000;
         Exposer exposer = seckillService.exportSeckillUrl(id);
-        System.out.println("\n"+exposer.toString());
+        System.out.println("\n" + exposer.toString());
 
-        if(exposer.isExposed()){
-            logger.info("exposer = {}",exposer);
+        if (exposer.isExposed()) {
+            logger.info("exposer = {}", exposer);
             long phone = 13282123333L;
             String md5 = exposer.getMd5();
             try {
                 SeckillExecution seckillExecution = seckillService.excuteSeckill(id, phone, md5);
-                logger.info("result={}",seckillExecution);
+                logger.info("result={}", seckillExecution);
             } catch (SeckillCloseException e1) {
                 logger.error(e1.getMessage());
             } catch (RepeatKillException e2) {
                 logger.error(e2.getMessage());
             }
-        }else {
-            logger.warn("exposer={}",exposer);
+        } else {
+            logger.warn("exposer={}", exposer);
         }
-
 
 
     }

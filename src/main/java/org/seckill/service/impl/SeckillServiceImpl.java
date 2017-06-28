@@ -2,6 +2,7 @@ package org.seckill.service.impl;
 
 import org.seckill.dao.SeckillDao;
 import org.seckill.dao.SuccessKillDao;
+import org.seckill.dao.cache.RedisDao;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
@@ -32,6 +33,8 @@ public class SeckillServiceImpl implements SeckillService {
     private SeckillDao seckillDao;
     @Autowired //resource inject (j2ee规范注解)
     private SuccessKillDao successKillDao;
+    @Autowired
+    private RedisDao redisDao;
     //日志
 //    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -57,10 +60,21 @@ public class SeckillServiceImpl implements SeckillService {
      * @return
      */
     public Exposer exportSeckillUrl(long secKillId) {
-        Seckill seckill = seckillDao.queryById(secKillId);
+
+        //添加redis优化高并发
+        Seckill seckill = redisDao.getSeckill(secKillId);
         if (seckill == null) {
-            return new Exposer(false, secKillId);
+            seckill = seckillDao.queryById(secKillId);
+            if (seckill == null) {
+                //无商品记录
+                return new Exposer(false, secKillId);
+            } else {
+                System.out.println("enter redis");
+                redisDao.putSeckill(seckill);
+            }
+
         }
+
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
         Date nowTime = new Date();
@@ -73,10 +87,10 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 使用注解的事务方法优点
-     * 1：开发团队达成一致的约定，明确标注事务方法的编程风格
-     * 2：保证事务方法的执行时间尽可能短，不要穿插其他的网络操作(RPC/HTTP请求）或者剥离事务方法外面
-     * 3：不是所有的方法都需要事务，比如只有一条修改操作，只读操作不需要事务控制
+     * 使用注解控制事务方法的优点:
+     * 1.开发团队达成一致约定，明确标注事务方法的编程风格
+     * 2.保证事务方法的执行时间尽可能短，不要穿插其他网络操作RPC/HTTP请求或者剥离到事务方法外部
+     * 3.不是所有的方法都需要事务，如只有一条修改操作、只读操作不要事务控制
      *
      * @param seckillId
      * @param userPhone

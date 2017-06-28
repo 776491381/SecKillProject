@@ -5,13 +5,9 @@ import org.junit.runner.RunWith;
 import org.seckill.entity.Seckill;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import javax.annotation.Resource;
-
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * 配置spring和junit整合，junit启东市加载springIOC容器
