@@ -8,6 +8,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
+ * 添加Redis缓存
  * Created by fyy on 6/28/17.
  */
 

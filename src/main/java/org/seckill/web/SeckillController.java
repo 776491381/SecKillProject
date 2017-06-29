@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
@@ -100,7 +101,8 @@ public class SeckillController {
         }
 //        SeckillResult<SeckillExecution> result;
         try {
-            SeckillExecution execution = seckillService.excuteSeckill(seckillId, phone, md5);
+            //通过存储过程获取
+            SeckillExecution execution = seckillService.excuteSeckillProcedure(seckillId, phone, md5);
             return new SeckillResult<SeckillExecution>(true, execution);
         } catch (SeckillCloseException e1) {
             SeckillExecution execution = new SeckillExecution(seckillId, SeckillStatEnum.END);
